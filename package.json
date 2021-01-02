@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "@types/node": "^14.14.19",
+    "express": "^4.17.1",
     "socket.io": "^3.0.4"
   }
 }
