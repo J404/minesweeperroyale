@@ -13,8 +13,9 @@ const io = require('socket.io')(server);
 io.on('connection', (socket: Socket) => {
     console.log('user connected');
     
-    socket.on('debug', (msg: Object) => {
-        console.log(msg);
+    type Coord = { i: number, j: number };
+    socket.on('explore', (coord: Coord) => {
+        socket.broadcast.emit('explore', coord);
     });
 });
 

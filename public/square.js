@@ -65,7 +65,7 @@ class Square {
         }
 
         // If it's a mine and not flagged, player loses
-        if (this.isMine && !this.isFlagged) {
+        if (this.isMine && !this.isFlagged && playerClick) {
             playerAlive = false;
             this.isRevealed = true;
             console.log("exploded");
