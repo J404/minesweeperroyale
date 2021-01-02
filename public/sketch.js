@@ -1,3 +1,6 @@
+// Socket.io
+const socket = io();
+
 // Set up variables, vals should not be changed
 const board = [];
 
