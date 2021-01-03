@@ -9,8 +9,8 @@ socket.emit('name', nick);
 let localPlayers = [];
 
 socket.on('playerdata', players => {
-    localPlayers = players;
-    app.players = localPlayers; 
+  localPlayers = players;
+  app.players = localPlayers;
 });
 
 // Sends an event to the server when a spot is explored
@@ -23,10 +23,26 @@ function sendExplore(spotI, spotJ) {
 // must explore/reveal square to this user
 socket.on('explore', ({ i, j }) => {
   const spot = board[i][j];
-  spot.click(false);
+  spot.click(true, false);
 });
 
 // Receives new board data from server
-socket.on('boarddata', board => {
-  console.log(board);
+socket.on('boarddata', serverBoard => {
+  for (let i = 0; i < serverBoard.length; i++) {
+    board[i] = [];
+    for (let j = 0; j < serverBoard[i].length; j++) {
+      const serverSqr = serverBoard[i][j];
+
+      const square = new Square(serverSqr.i, serverSqr.j, serverSqr.x, serverSqr.y);
+      square.isMine = serverSqr.isMine;
+      
+      board[i][j] = square;
+    }
+  }
+  
+  for (let row of board) {
+    for (let square of row) {
+      square.calculateAdjacentMines();
+    }
+  }
 });

@@ -26,7 +26,7 @@ class Square {
     // When this square is (left) clicked, we must determine whether it is a mine or not
     // If not, we must determine the number of mines in adjacent squares
     // This method is NOT a pre-built event handler
-    click(playerClick) {
+    click(playerClick, clientPlayer) {
         // If this is the first click and the square is a mine, we must move the mine and make the clicked square safe
         if (this.isMine && firstClick) {
             this.isMine = false;
@@ -65,7 +65,7 @@ class Square {
         }
 
         // If it's a mine and not flagged, player loses
-        if (this.isMine && !this.isFlagged && playerClick) {
+        if (this.isMine && !this.isFlagged && playerClick && clientPlayer) {
             playerAlive = false;
             this.isRevealed = true;
             console.log("exploded");

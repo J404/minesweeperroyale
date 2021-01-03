@@ -1,5 +1,5 @@
 // Set up variables, vals should not be changed
-const board = [];
+let board = [];
 
 let placedFlags = [];
 let numPlacedFlags = 0;
@@ -42,7 +42,7 @@ const timer = setInterval(() => {
 // Sets up the board of mines
 function setup() {
   createCanvas((boardWidth > headerWidth) ? boardWidth : headerWidth, boardHeight + headerHeight);
-  createBoard();
+  // createBoard();
 }
 
 // draw is a custom p5 js function that loops continually throughout the program's operation
@@ -51,9 +51,11 @@ function draw() {
   background("#616363");
   
   // Show each square on the board
-  for (let i = 0; i < numSquaresY; i++) {
-    for (let j = 0; j < numSquaresX; j++) {
-      board[i][j].show();
+  if (board.length > 0) {
+    for (let i = 0; i < numSquaresY; i++) {
+      for (let j = 0; j < numSquaresX; j++) {
+        board[i][j].show();
+      }
     }
   }
     
@@ -100,10 +102,10 @@ function mousePressed() {
     
     // Left click = click the square
     if (mouseButton == LEFT) {
-      if (firstClick)
-        setMines(j, i);
+      // if (firstClick)
+        // setMines(j, i);
       
-      clickedSquare.click(true);
+      clickedSquare.click(true, true);
       sendExplore(i, j);
       
     // Right click = flag the square
