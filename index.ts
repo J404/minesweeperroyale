@@ -82,11 +82,17 @@ io.on('connection', (socket: Socket) => {
         io.to(roomCode).emit('boarddata', room.board);
     });
 
+    type Coord = { i: number, j: number };
+
     // Activates when a player explores a square
     // Tells other sockets to show that square as clicked
-    type Coord = { i: number, j: number };
     socket.on('explore', (coord: Coord) => {
         socket.to(roomCode).broadcast.emit('explore', coord);
+    });
+    
+    // When client places a new flag
+    socket.on('flag', (coord: Coord) => {
+        socket.to(roomCode).broadcast.emit('flag', coord);
     });
 });
 

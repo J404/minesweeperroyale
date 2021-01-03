@@ -21,9 +21,20 @@ function sendExplore(spotI, spotJ) {
 
 // Receive a explore event from server
 // must explore/reveal square to this user
-socket.on('explore', ({ i, j }) => {
-  const spot = board[i][j];
-  spot.click(true, false);
+socket.on('explore', ({ i, j, }) => {
+  const square = board[i][j];
+  square.click(true, false);
+});
+
+// Sends a flag click to server
+function sendFlag(i, j) {
+  socket.emit('flag', { i, j });
+}
+
+// Receive a flag click from server
+socket.on('flag', ({ i, j }) => {
+  const square = board[i][j];
+  square.flag();
 });
 
 // Receives new board data from server
