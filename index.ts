@@ -11,7 +11,7 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/public/index.html');
 });
 
-let roomCode: string | undefined = undefined;
+let roomCode: string = '';
 
 app.get('/room/:roomCode', (req, res) => {
     roomCode = req.params.roomCode;
@@ -24,12 +24,11 @@ const io = require('socket.io')(server);
 io.on('connection', (socket: Socket) => {
     console.log('user connected');
 
-    if (roomCode)
-        socket.join(roomCode);
+    socket.join(roomCode);
     
     type Coord = { i: number, j: number };
     socket.on('explore', (coord: Coord) => {
-        socket.broadcast.emit('explore', coord);
+        socket.to(roomCode).broadcast.emit('explore', coord);
     });
 });
 
