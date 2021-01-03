@@ -1,4 +1,6 @@
-interface Square {
+export type Board = Square[][];
+
+export interface Square {
     i: number;
     j: number;
     x: number;
@@ -24,7 +26,7 @@ let numSquaresY = 30;
 const startingMines = 150;
 
 // MUTATES ORIGINAL ARRAY
-const setMines = (board: Square[][]): void => {
+const setMines = (board: Board): void => {
     let numMines = startingMines;
 
     while (numMines > 0) {
@@ -38,8 +40,8 @@ const setMines = (board: Square[][]): void => {
     }
 }
 
-export default function createBoard(): Square[][] {
-    const board: Square[][] = [];
+export function createBoard(): Board {
+    const board: Board = [];
 
     for (let i = 0; i < numSquaresY; i++) {
         board[i] = [];

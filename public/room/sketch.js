@@ -9,6 +9,7 @@ let playerAlive = true;
 
 // Constants, vals can be played around with
 // Default values for 30x16 board (standard) is square length of 20, board width of 630, board height of 336
+// DEPRECATED: Now receives these values from server side
 const squareWidth = 20;
 const squareHeight = 20;
 
@@ -152,6 +153,7 @@ function checkFlagPosition() {
 
 // Set the board full of empty squares, 
 // then fills it with mines and calculates number of adjacent mines for each square
+// DEPRECATED: now runs on server side and is sent to clients
 function createBoard() {
   for (let i = 0; i < numSquaresY; i++) {
     board[i] = [];

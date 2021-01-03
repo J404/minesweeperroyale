@@ -25,3 +25,8 @@ socket.on('explore', ({ i, j }) => {
   const spot = board[i][j];
   spot.click(false);
 });
+
+// Receives new board data from server
+socket.on('boarddata', board => {
+  console.log(board);
+});

@@ -21,8 +21,12 @@ app.get('/room/:roomCode', (req, res) => {
 const server = http.createServer(app);
 const io = require('socket.io')(server);
 
+// Types
+import { Board, Square, createBoard } from './msutil';
+
 interface Room {
     roomCode: string;
+    board: Board;
     players: Player[];
 }
 
@@ -35,9 +39,11 @@ const rooms: { [ roomCode: string ]: Room } = {};
 io.on('connection', (socket: Socket) => {
     let playerName = '';
 
-    // Find or create a new room from the room code
-    if (!!!rooms[roomCode])
-        rooms[roomCode] = { roomCode, players: [] };
+    // Create a new room if necessary
+    if (!!!rooms[roomCode]) {
+        const board = createBoard();
+        rooms[roomCode] = { roomCode, board, players: [] };
+    }
         
     const room = rooms[roomCode];
 
@@ -45,11 +51,18 @@ io.on('connection', (socket: Socket) => {
     socket.join(roomCode);
     
     // When the socket emits a name, it means the player is joining the lobby
-    // So, update the players and send the new data to everyone else so they see the new player
     socket.on('name', (nickname: string) => {
+        // Update their name to the room
         room.players.push({ nickname });
+
+        // Send the data to other players
         io.to(roomCode).emit('playerdata', room.players);
+
+        // Identify this socket with the nickname
         playerName = nickname;
+
+        // Send the new player a copy of the board
+        io.to(roomCode).emit('boarddata', room.board);
     });
 
     // Activates when a player explores a square
