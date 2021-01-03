@@ -20,7 +20,8 @@
 <body>
     <div id="app">
         <p>Players</p>
-        <p v-for="player in players">{{ player.nickname }}</p>
+        <p v-for="player in players"
+        :style="{ color: player.color }">{{ player.nickname }}</p>
     </div>
 </body>
 </html>

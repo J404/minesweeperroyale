@@ -32,6 +32,7 @@ interface Room {
 
 interface Player {
     nickname: string;
+    color: string;
 }
 
 const rooms: { [ roomCode: string ]: Room } = {};
@@ -52,8 +53,24 @@ io.on('connection', (socket: Socket) => {
     
     // When the socket emits a name, it means the player is joining the lobby
     socket.on('name', (nickname: string) => {
+
+        // Generate random hex color for this player
+        const r = Math.floor(Math.random() * 255);
+        const g = Math.floor(Math.random() * 255);
+        const b = Math.floor(Math.random() * 255);
+        
+        let hexR = r.toString(16);
+        let hexG = g.toString(16);
+        let hexB = b.toString(16);
+        
+        hexR = (hexR.length === 1) ? '0' + hexR : hexR;
+        hexG = (hexG.length === 1) ? '0' + hexG : hexG;
+        hexB = (hexB.length === 1) ? '0' + hexB : hexB;
+
+        const color = '#' + hexR + hexG + hexB;
+
         // Update their name to the room
-        room.players.push({ nickname });
+        room.players.push({ nickname, color });
 
         // Send the data to other players
         io.to(roomCode).emit('playerdata', room.players);
