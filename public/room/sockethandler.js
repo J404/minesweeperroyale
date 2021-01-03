@@ -4,6 +4,7 @@ const socket = io();
 // Emit name to server upon joining game
 let nick = prompt('Howdy sailor! Let us know what you want to be called');
 socket.emit('name', nick);
+playerName = nick;
 
 // When server sends new player info
 let localPlayers = [];
@@ -11,6 +12,11 @@ let localPlayers = [];
 socket.on('playerdata', players => {
   localPlayers = players;
   app.players = localPlayers;
+
+  for (let player of localPlayers) {
+    if (player.nickname === playerName)
+      playerColor = player.color;
+  }
 });
 
 // Sends an event to the server when a spot is explored
@@ -21,9 +27,9 @@ function sendExplore(spotI, spotJ) {
 
 // Receive a explore event from server
 // must explore/reveal square to this user
-socket.on('explore', ({ i, j, }) => {
-  const square = board[i][j];
-  square.click(true, false);
+socket.on('explore', ({ coord, color }) => {
+  const square = board[coord.i][coord.j];
+  square.click(true, false, color);
 });
 
 // Sends a flag click to server
@@ -32,8 +38,8 @@ function sendFlag(i, j) {
 }
 
 // Receive a flag click from server
-socket.on('flag', ({ i, j }) => {
-  const square = board[i][j];
+socket.on('flag', ({ coord, color }) => {
+  const square = board[coord.i][coord.j];
   square.flag();
 });
 

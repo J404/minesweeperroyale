@@ -39,6 +39,7 @@ const rooms: { [ roomCode: string ]: Room } = {};
 
 io.on('connection', (socket: Socket) => {
     let playerName = '';
+    let color = '';
 
     // Create a new room if necessary
     if (!!!rooms[roomCode]) {
@@ -67,7 +68,7 @@ io.on('connection', (socket: Socket) => {
         hexG = (hexG.length === 1) ? '0' + hexG : hexG;
         hexB = (hexB.length === 1) ? '0' + hexB : hexB;
 
-        const color = '#' + hexR + hexG + hexB;
+        color = '#' + hexR + hexG + hexB;
 
         // Update their name to the room
         room.players.push({ nickname, color });
@@ -87,12 +88,12 @@ io.on('connection', (socket: Socket) => {
     // Activates when a player explores a square
     // Tells other sockets to show that square as clicked
     socket.on('explore', (coord: Coord) => {
-        socket.to(roomCode).broadcast.emit('explore', coord);
+        socket.to(roomCode).broadcast.emit('explore', { coord, color });
     });
     
     // When client places a new flag
     socket.on('flag', (coord: Coord) => {
-        socket.to(roomCode).broadcast.emit('flag', coord);
+        socket.to(roomCode).broadcast.emit('flag', { coord, color });
     });
 });
 

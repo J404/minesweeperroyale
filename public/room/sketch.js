@@ -1,3 +1,7 @@
+// Player vars
+let playerName = '';
+let playerColor = '';
+
 // Set up variables, vals should not be changed
 let board = [];
 
@@ -105,7 +109,7 @@ function mousePressed() {
       // if (firstClick)
         // setMines(j, i);
       
-      clickedSquare.click(true, true);
+      clickedSquare.click(true, true, playerColor);
       sendExplore(i, j);
       
     // Right click = flag the square

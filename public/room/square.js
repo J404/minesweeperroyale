@@ -9,6 +9,8 @@ class Square {
         this.isRevealed = false;
         this.isFlagged = false;
         this.textColor = "#9ea2a3";
+        this.hasBorder = false;
+        this.borderColor = '';
     }
 
     flag() {
@@ -26,71 +28,39 @@ class Square {
     // When this square is (left) clicked, we must determine whether it is a mine or not
     // If not, we must determine the number of mines in adjacent squares
     // This method is NOT a pre-built event handler
-    click(playerClick, clientPlayer) {
-        // If this is the first click and the square is a mine, we must move the mine and make the clicked square safe
-        if (this.isMine && firstClick) {
-            this.isMine = false;
-            this.isRevealed = true;
-
-            // Update this square after mine moves
-            this.calculateAdjacentMines();
-
-            // Update the mine count of adjacent squares as well
-            const code = this.getAdjacentSquaresCode();
-            const adjacentSquares = this.getAdjacentSquares(code);
-
-            for (let i = 0; i < adjacentSquares.length; i++) {
-                adjacentSquares[i].calculateAdjacentMines();
-            }
-
-            // If it's the first click, move the mine to the upper-left hand corner and update those adjacent squares
-            board[0][0].isMine = true;
-
-            const cornerCode = board[0][0].getAdjacentSquaresCode();
-            const cornerSquares = board[0][0].getAdjacentSquares(cornerCode);
-
-            for (let i = 0; i < cornerSquares.length; i++) {
-                cornerSquares[i].calculateAdjacentMines();
-            }
-
-            // If this square has 0 adjacent mines, reveal the adjacent squares
-            if (this.numAdjacentMines == 0) {
-                this.revealAdjacentSquares();
-            }
-
-            firstClick = false;
-            return;
-        } else {
-            firstClick = false;
-        }
-
+    click(playerClick, clientPlayer, color) {
         // If it's a mine and not flagged, player loses
         if (this.isMine && !this.isFlagged && playerClick && clientPlayer) {
             playerAlive = false;
+
             this.isRevealed = true;
+            this.changeBorder(true, color);
+
             console.log("exploded");
             // Don't click if the tile is flagged
         } else if (!this.isFlagged) {
             // If the player is clicking on a square that's already been clicked on, reveal the adjacent squares
             if (this.isRevealed && playerClick)
-                this.revealAdjacentSquares();
+                this.revealAdjacentSquares(clientPlayer, color);
 
             this.isRevealed = true;
+            this.changeBorder(true, color);
 
             // If this square has 0 adjacent mines, reveal the adjacent squares
             if (this.numAdjacentMines == 0) {
-                this.revealAdjacentSquares();
+                this.revealAdjacentSquares(clientPlayer, color);
+                this.changeBorder(false, color);
             }
         }
     }
 
     // Get adjacent squares and reveal them
-    revealAdjacentSquares() {
+    revealAdjacentSquares(clientPlayer, color) {
         const code = this.getAdjacentSquaresCode();
         const adjacentSquares = this.getAdjacentSquares(code);
         for (let s of adjacentSquares) {
             if (!s.isRevealed && !s.isFlagged)
-                s.click(false);
+                s.click(false, clientPlayer, color);
         }
     }
 
@@ -192,6 +162,11 @@ class Square {
         }
     }
 
+    changeBorder(showBorder, color) {
+        this.hasBorder = showBorder;
+        this.borderColor = color;
+    }
+
     // Show the tile
     show() {
         // Draws the tile itself
@@ -227,6 +202,18 @@ class Square {
                 textSize(12);
                 text(this.numAdjacentMines, this.x + 10, this.y + 5);
             }
+        }
+
+        // Show a border for color coding which player clicked it
+        if (this.hasBorder) { 
+            stroke(this.borderColor);
+            strokeWeight(2);
+            line(this.x + 1, this.y + 1, this.x + squareWidth - 1, this.y + 1);
+            line(this.x + 1, this.y + 1, this.x + 1, this.y + squareHeight - 1);
+            line(this.x + squareWidth - 1, this.y + 1, this.x + squareWidth - 1, 
+                this.y + squareHeight - 1);
+            line(this.x + 1, this.y + squareHeight - 1, 
+                this.x + squareWidth - 1, this.y + squareHeight - 1);
         }
     }
 }
