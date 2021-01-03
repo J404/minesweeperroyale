@@ -1,6 +1,3 @@
-// Socket.io
-const socket = io();
-
 // Set up variables, vals should not be changed
 const board = [];
 
@@ -236,18 +233,7 @@ function setDimensionsFromNumSquares() {
   boardHeight = numSquaresY * yIncrement;
 }
 
-// Sends an event to the server when a spot is explored
-// I and J refer to the position of the spot in the board array
-function sendExplore(spotI, spotJ) {
-  socket.emit('explore', { i: spotI, j: spotJ });
-}
 
-// Receive a explore event from server
-// must explore/reveal square to this user
-socket.on('explore', ({ i, j }) => {
-  const spot = board[i][j];
-  spot.click(false);
-});
 
 // This event listener prevents the normal right-click menu from opening when you flag a square
 document.addEventListener("contextmenu", e => {

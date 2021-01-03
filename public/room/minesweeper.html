@@ -12,9 +12,15 @@
 
     <link rel="stylesheet" type="text/css" href="style.css">
 
+    <script src="client.js" defer></script>
+    <script src="sockethandler.js" defer></script>
     <script src="sketch.js" defer></script>
     <script src="square.js" defer></script>
 </head>
 <body>
+    <div id="app">
+        <p>Players</p>
+        <p v-for="player in players">{{ player.nickname }}</p>
+    </div>
 </body>
 </html>

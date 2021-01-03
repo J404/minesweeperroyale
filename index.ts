@@ -21,11 +21,39 @@ app.get('/room/:roomCode', (req, res) => {
 const server = http.createServer(app);
 const io = require('socket.io')(server);
 
-io.on('connection', (socket: Socket) => {
-    console.log('user connected');
+interface Room {
+    roomCode: string;
+    players: Player[];
+}
 
+interface Player {
+    nickname: string;
+}
+
+const rooms: { [ roomCode: string ]: Room } = {};
+
+io.on('connection', (socket: Socket) => {
+    let playerName = '';
+
+    // Find or create a new room from the room code
+    if (!!!rooms[roomCode])
+        rooms[roomCode] = { roomCode, players: [] };
+        
+    const room = rooms[roomCode];
+
+    // Send this socket to that new room
     socket.join(roomCode);
     
+    // When the socket emits a name, it means the player is joining the lobby
+    // So, update the players and send the new data to everyone else so they see the new player
+    socket.on('name', (nickname: string) => {
+        room.players.push({ nickname });
+        io.to(roomCode).emit('playerdata', room.players);
+        playerName = nickname;
+    });
+
+    // Activates when a player explores a square
+    // Tells other sockets to show that square as clicked
     type Coord = { i: number, j: number };
     socket.on('explore', (coord: Coord) => {
         socket.to(roomCode).broadcast.emit('explore', coord);
