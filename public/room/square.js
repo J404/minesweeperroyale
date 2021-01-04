@@ -9,11 +9,14 @@ class Square {
         this.isRevealed = false;
         this.isFlagged = false;
         this.textColor = "#9ea2a3";
+        this.flagColor = '';
         this.hasBorder = false;
         this.borderColor = '';
     }
 
-    flag() {
+    flag(flagColor) {
+        this.flagColor = flagColor;
+        
         if (this.isFlagged) {
             this.isRevealed = false;
             this.isFlagged = false;
@@ -183,7 +186,7 @@ class Square {
         if (this.isRevealed) {
             if (this.isFlagged) {
                 // Flag symbol
-                fill(255, 0, 0);
+                fill(this.flagColor);
                 triangle(this.x + 5, this.y + 5, this.x + 15, this.y + 8, this.x + 5, this.y + 11);
                 stroke(0);
                 strokeWeight(1);

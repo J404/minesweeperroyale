@@ -40,7 +40,7 @@ function sendFlag(i, j) {
 // Receive a flag click from server
 socket.on('flag', ({ coord, color }) => {
   const square = board[coord.i][coord.j];
-  square.flag();
+  square.flag(color);
 });
 
 // Receives new board data from server
