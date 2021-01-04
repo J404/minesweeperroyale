@@ -22,7 +22,7 @@ const server = http.createServer(app);
 const io = require('socket.io')(server);
 
 // Types
-import { Board, Square, createBoard } from './msutil';
+import { Board, Square, createBoard } from './utils/msutil';
 
 interface Room {
     roomCode: string;
@@ -34,6 +34,7 @@ interface Player {
     nickname: string;
     color: string;
     score: number;
+    alive: boolean;
 }
 
 const rooms: { [ roomCode: string ]: Room } = {};
@@ -74,7 +75,7 @@ io.on('connection', (socket: Socket) => {
 
         // Update their name to the room
         playerIndex = room.players.length;
-        room.players.push({ nickname, color, score: 0 });
+        room.players.push({ nickname, color, score: 0, alive: true });
 
         // Send the data to other players
         io.to(roomCode).emit('playerdata', room.players);
@@ -102,6 +103,12 @@ io.on('connection', (socket: Socket) => {
     // When client's score updates
     socket.on('playerdata', (score: number) => {
         room.players[playerIndex].score += score;
+    });
+    
+    // When a client alerts their death
+    socket.on('deathdata', () => {
+        room.players[playerIndex].alive = false;
+        socket.to(roomCode).broadcast.emit('deathdata', { playerName, playerIndex });
     });
 });
 
