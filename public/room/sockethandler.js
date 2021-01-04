@@ -19,6 +19,14 @@ socket.on('playerdata', players => {
   }
 });
 
+/**
+ * Sends updates to the server on this client's score
+ * @param {number} update Update to the player's score, NOT their total score
+ */
+function sendScoreUpdate(update) {
+  socket.emit('playerdata', update);
+}
+
 // Sends an event to the server when a spot is explored
 // I and J refer to the position of the spot in the board array
 function sendExplore(spotI, spotJ) {

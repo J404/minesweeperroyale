@@ -33,6 +33,7 @@ interface Room {
 interface Player {
     nickname: string;
     color: string;
+    score: number;
 }
 
 const rooms: { [ roomCode: string ]: Room } = {};
@@ -40,6 +41,7 @@ const rooms: { [ roomCode: string ]: Room } = {};
 io.on('connection', (socket: Socket) => {
     let playerName = '';
     let color = '';
+    let playerIndex = 0;
 
     // Create a new room if necessary
     if (!!!rooms[roomCode]) {
@@ -71,7 +73,8 @@ io.on('connection', (socket: Socket) => {
         color = '#' + hexR + hexG + hexB;
 
         // Update their name to the room
-        room.players.push({ nickname, color });
+        playerIndex = room.players.length;
+        room.players.push({ nickname, color, score: 0 });
 
         // Send the data to other players
         io.to(roomCode).emit('playerdata', room.players);
@@ -94,6 +97,11 @@ io.on('connection', (socket: Socket) => {
     // When client places a new flag
     socket.on('flag', (coord: Coord) => {
         socket.to(roomCode).broadcast.emit('flag', { coord, color });
+    });
+
+    // When client's score updates
+    socket.on('playerdata', (score: number) => {
+        room.players[playerIndex].score += score;
     });
 });
 
