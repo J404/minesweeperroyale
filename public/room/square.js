@@ -12,6 +12,7 @@ class Square {
         this.flagColor = '';
         this.hasBorder = false;
         this.borderColor = '';
+        this.borderChanged = false;
     }
 
     flag(flagColor) {
@@ -33,7 +34,7 @@ class Square {
     // This method is NOT a pre-built event handler
     click(playerClick, clientPlayer, color) {
         // If it's a mine and not flagged, player loses
-        if (this.isMine && !this.isFlagged && playerClick && clientPlayer) {
+        if (this.isMine && !this.isFlagged && clientPlayer) {
             playerAlive = false;
 
             this.isRevealed = true;
@@ -166,8 +167,13 @@ class Square {
     }
 
     changeBorder(showBorder, color) {
+        // Border shouldn't change after initially being set (prevents 'reclicks')
+        if (this.borderChanged)
+            return;
+
         this.hasBorder = showBorder;
         this.borderColor = color;
+        this.borderChanged = true;
     }
 
     // Show the tile
