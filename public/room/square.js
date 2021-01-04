@@ -16,15 +16,19 @@ class Square {
     }
 
     flag(flagColor) {
-        this.flagColor = flagColor;
+        // Check if it's another player trying to 'steal' a flag
+        if (this.flagColor !== '' && flagColor !== this.flagColor)
+            return;
         
         if (this.isFlagged) {
             this.isRevealed = false;
             this.isFlagged = false;
+            this.flagColor = '';
             removeFromFlagArray(this);
         } else if (!this.isRevealed) {
             this.isRevealed = true;
             this.isFlagged = true;
+            this.flagColor = flagColor;
             addToFlagArray(this);
         }
     }
