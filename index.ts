@@ -23,19 +23,7 @@ const io = require('socket.io')(server);
 
 // Types
 import { Board, Square, createBoard } from './utils/msutil';
-
-interface Room {
-    roomCode: string;
-    board: Board;
-    players: Player[];
-}
-
-interface Player {
-    nickname: string;
-    color: string;
-    score: number;
-    alive: boolean;
-}
+import { Room, determineRankings } from './utils/util';
 
 const rooms: { [ roomCode: string ]: Room } = {};
 
