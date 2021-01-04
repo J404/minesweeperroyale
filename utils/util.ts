@@ -48,3 +48,14 @@ export const determineRankings = (room: Room): Player[] => {
 
     return rankedPlayers;
 }
+
+export const isGameOver = (room: Room): boolean => {
+    let numDead = 0;
+
+    for (let i = 0; i < room.players.length; i++) {
+        if (!room.players[i].alive)
+            numDead++;
+    }
+
+    return numDead === room.players.length - 1;
+}
