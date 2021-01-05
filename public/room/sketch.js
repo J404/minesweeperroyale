@@ -116,7 +116,7 @@ function mousePressed() {
       
     // Right click = flag the square
     } else if (mouseButton == RIGHT) {
-      clickedSquare.flag(playerColor);
+      clickedSquare.flag(playerColor, true);
       sendFlag(i, j);
     }
   }

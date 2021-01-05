@@ -15,7 +15,7 @@ class Square {
         this.borderChanged = false;
     }
 
-    flag(flagColor) {
+    flag(flagColor, clientPlayer) {
         // Check if it's another player trying to 'steal' a flag
         if (this.flagColor !== '' && flagColor !== this.flagColor)
             return;
@@ -25,11 +25,28 @@ class Square {
             this.isFlagged = false;
             this.flagColor = '';
             removeFromFlagArray(this);
+
+            // Update score to negate if they end up removing the flag
+            if (clientPlayer) {
+                if (this.isMine)
+                    sendScoreUpdate(-15);
+                else
+                    sendScoreUpdate(10);
+            }
         } else if (!this.isRevealed) {
             this.isRevealed = true;
             this.isFlagged = true;
             this.flagColor = flagColor;
             addToFlagArray(this);
+
+            // Update score if this flag was correct/incorrect
+            // (only if the client placed the flag)
+            if (clientPlayer) {
+                if (this.isMine)
+                    sendScoreUpdate(15);
+                else
+                    sendScoreUpdate(-10);
+            }
         }
     }
 
