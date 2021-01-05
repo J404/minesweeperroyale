@@ -11,6 +11,7 @@ export interface Player {
     color: string;
     score: number;
     alive: boolean;
+    isHost: boolean;
 }
 
 export const checkAllZero = (players: Player[]): boolean => {

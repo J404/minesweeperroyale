@@ -61,9 +61,15 @@ io.on('connection', (socket: Socket) => {
 
         color = '#' + hexR + hexG + hexB;
 
-        // Update their name to the room
+        // Update their name to the room, determine if they're the first player/host
         playerIndex = room.players.length;
-        room.players.push({ nickname, color, score: 0, alive: true });
+        room.players.push({ 
+            nickname, 
+            color, 
+            score: 0, 
+            alive: true,
+            isHost: room.players.length === 0,
+        });
 
         // Send the data to other players
         io.to(roomCode).emit('playerdata', room.players);
@@ -73,6 +79,7 @@ io.on('connection', (socket: Socket) => {
 
         // Send the new player a copy of the board
         io.to(roomCode).emit('boarddata', room.board);
+
     });
 
     type Coord = { i: number, j: number };
