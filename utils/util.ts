@@ -12,6 +12,7 @@ export interface Player {
     color: string;
     score: number;
     alive: boolean;
+    ingame: boolean;
     isHost: boolean;
 }
 
@@ -19,7 +20,7 @@ export const checkAllZero = (players: Player[]): boolean => {
     let allZero = true;
 
     for (let player of players) {
-        if (player.score !== 0)
+        if (player.score !== 0 && player.ingame)
             allZero = false;
     }
     
@@ -35,7 +36,7 @@ export const determineRankings = (room: Room): Player[] => {
             players[i] = room.players[i];
 
             // Check if this is the alive player
-            if (players[i].alive) {
+            if (players[i].alive && players[i].ingame) {
                 // If so, we need to move them to the front of the array
                 const firstPlayer = players[0];
                 const alivePlayer = players[i];
@@ -69,7 +70,7 @@ export const determineRankings = (room: Room): Player[] => {
         for (let j = 0; j < toSort.length; j++) {
             if (toSort[j] > max && usedIndexes.indexOf(j) < 0) {
                 // If this isn't the 'first' round, we need to cut out the last 'max' number
-                if (max !== Number.MIN_SAFE_INTEGER)
+                if (max !== Number.MIN_SAFE_INTEGER && room.players[i].ingame)
                     usedIndexes.pop();
                 usedIndexes.push(j);
 
@@ -88,11 +89,14 @@ export const determineRankings = (room: Room): Player[] => {
 
 export const isGameOver = (room: Room): boolean => {
     let numDead = 0;
+    let numPlayers = 0;
 
     for (let i = 0; i < room.players.length; i++) {
         if (!room.players[i].alive)
             numDead++;
+        if (room.players[i].ingame)
+            numPlayers++;
     }
 
-    return numDead === room.players.length - 1;
+    return numDead === numPlayers - 1;
 }

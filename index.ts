@@ -34,8 +34,12 @@ io.on('connection', (socket: Socket) => {
 
     // Create a new room if necessary
     if (!!!rooms[roomCode]) {
-        const board = createBoard();
-        rooms[roomCode] = { roomCode, board, players: [], active: false };
+        rooms[roomCode] = { 
+            roomCode, 
+            board: [] as Square[][], 
+            players: [], 
+            active: false 
+        };
     }
         
     const room = rooms[roomCode];
@@ -68,6 +72,7 @@ io.on('connection', (socket: Socket) => {
             color, 
             score: 0, 
             alive: true,
+            ingame: false,
             isHost: room.players.length === 0,
         });
 
@@ -76,15 +81,26 @@ io.on('connection', (socket: Socket) => {
 
         // Identify this socket with the nickname
         playerName = nickname;
-
-        // Send the new player a copy of the board
-        io.to(socket.id).emit('boarddata', room.board);
-
     });
     
-    // Receive gamestart from host, carry on the message to clients
+    // Receive gamestart from host, carry on the message to clients, reset old game if necessary
     socket.on('gamestart', () => {
+        // Reset and send board
+        room.board = createBoard();
+        io.to(roomCode).emit('boarddata', room.board);
+
+        // Reset player stats
+        for (let player of room.players) {
+            player.score = 0;
+            player.alive = true;
+            player.ingame = true;
+        }
+        io.to(roomCode).emit('playerdata', room.players);
+
+        // Send game start event
         io.to(roomCode).emit('gamestart');
+        
+        // Set the game to active
         room.active = true;
     });
 
