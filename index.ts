@@ -23,7 +23,7 @@ const io = require('socket.io')(server);
 
 // Types
 import { Board, Square, createBoard } from './utils/msutil';
-import { Room, determineRankings } from './utils/util';
+import { Room, determineRankings, isGameOver } from './utils/util';
 
 const rooms: { [ roomCode: string ]: Room } = {};
 
@@ -97,6 +97,10 @@ io.on('connection', (socket: Socket) => {
     socket.on('deathdata', () => {
         room.players[playerIndex].alive = false;
         socket.to(roomCode).broadcast.emit('deathdata', { playerName, playerIndex });
+        
+        if (isGameOver(room)) {
+            io.to(roomCode).emit('gameover', { rankings: determineRankings(room) });
+        }
     });
 });
 

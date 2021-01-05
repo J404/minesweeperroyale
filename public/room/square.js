@@ -38,8 +38,11 @@ class Square {
     // This method is NOT a pre-built event handler
     click(playerClick, clientPlayer, color) {
         // If it's a mine and not flagged, player loses
-        if (this.isMine && !this.isFlagged && clientPlayer) {
-            playerAlive = false;
+        if (this.isMine && !this.isFlagged) {
+            if (clientPlayer) {
+                playerAlive = false;
+                sendDeath();
+            }
 
             this.isRevealed = true;
             this.changeBorder(true, color);

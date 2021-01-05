@@ -71,3 +71,13 @@ socket.on('boarddata', serverBoard => {
     }
   }
 });
+
+// Sends this client's death to server
+function sendDeath() {
+  socket.emit('deathdata');
+}
+
+// Receive gameover event from server
+socket.on('gameover', ({ rankings }) => {
+  alert(`Gameover! Winner is ${rankings[0].nickname}`);
+});
