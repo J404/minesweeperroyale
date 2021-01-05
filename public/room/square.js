@@ -60,7 +60,9 @@ class Square {
             // If this square has 0 adjacent mines, reveal the adjacent squares
             if (this.numAdjacentMines == 0) {
                 this.revealAdjacentSquares(clientPlayer, color);
-                this.changeBorder(false, color);
+                
+                // Must reset border manually since it's already been 'set'
+                this.hasBorder = false;
             }
         }
     }
