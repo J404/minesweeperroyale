@@ -31,6 +31,7 @@ function sendStart() {
 // Receive a gamestart event from the server, allow the player to start clicking
 socket.on('gamestart', () => {
   canPlay = true;
+  playerAlive = true;
   app.canPlay = true;
 });
 

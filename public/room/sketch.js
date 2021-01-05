@@ -13,6 +13,7 @@ let numPlacedFlags = 0;
 
 let firstClick = true;
 let playerAlive = true;
+let endMessageShown = false;
 
 // Constants, vals can be played around with
 // Default values for 30x16 board (standard) is square length of 20, board width of 630, board height of 336
@@ -74,11 +75,13 @@ function draw() {
   }
     
   // Checks if the player has won/lost
-  if (checkWin()) {
-    alertText("You win!");
+  if (checkWin() && !endMessageShown) {
+    alert('You win!');
     sendGameOver();
-  } else if (!playerAlive) {
-    alertText("You lose :(");
+    endMessageShown = true;
+  } else if (!playerAlive && !endMessageShown) {
+    alert('You lose :(');
+    endMessageShown = true;
   }
   
   // Displays number of remaining mines and the time
@@ -87,17 +90,6 @@ function draw() {
   fill(255, 0, 0);
   text(startingMines - numPlacedFlags, 50, headerHeight - 5);
   text(time, width - 100, headerHeight - 5);
-}
-
-// Alerts the msg text in big, white letters across the screen
-function alertText(msg) {
-  textAlign(CENTER);
-  fill(255);
-  strokeWeight(5);
-  textSize(64);
-  text(msg, width / 2, height / 2);
-  //noLoop();
-  //clearInterval(timer);
 }
 
 // Custom p5 js event handler
