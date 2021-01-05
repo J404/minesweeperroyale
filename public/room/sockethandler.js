@@ -80,6 +80,7 @@ function sendDeath() {
 // Receive gameover event from server
 socket.on('gameover', ({ rankings }) => {
   alert(`Gameover! Winner is ${rankings[0].nickname}`);
+  console.log(rankings);
 });
 
 // Send gameover event

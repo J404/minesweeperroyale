@@ -80,6 +80,9 @@ class Square {
                 
                 // Must reset border manually since it's already been 'set'
                 this.hasBorder = false;
+            } else {
+                // If it isn't a 0 square, we reward them slightly for exploring it
+                sendScoreUpdate(0.25);
             }
         }
     }
