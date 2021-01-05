@@ -13,7 +13,42 @@ export interface Player {
     alive: boolean;
 }
 
+export const checkAllZero = (players: Player[]): boolean => {
+    let allZero = true;
+
+    for (let player of players) {
+        if (player.score !== 0)
+            allZero = false;
+    }
+    
+    return allZero;
+}
+
 export const determineRankings = (room: Room): Player[] => {
+    // First, we want to check if all players have 0 score and 1 is alive
+    if (isGameOver(room) && checkAllZero(room.players)) {
+        const players: Player[] = [];
+
+        for (let i = 0; i < room.players.length; i++) {
+            players[i] = room.players[i];
+
+            // Check if this is the alive player
+            if (players[i].alive) {
+                // If so, we need to move them to the front of the array
+                const firstPlayer = players[0];
+                const alivePlayer = players[i];
+                let temp: Player = {} as Player;
+
+                temp = firstPlayer;
+                players[0] = alivePlayer;
+                players[i] = temp;
+            }
+        }
+
+        return players;
+    }
+    // Otherwise, rank them on scores
+
     // Copy array (don't mutate arg directly)
     const rankedPlayers: Player[] = [];
     const toSort: number[] = [];
