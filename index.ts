@@ -81,7 +81,8 @@ io.on('connection', (socket: Socket) => {
 
         // Identify this socket with the nickname
         playerName = nickname;
-    });
+    })
+    ;
     
     // Receive gamestart from host, carry on the message to clients, reset old game if necessary
     socket.on('gamestart', () => {
@@ -120,7 +121,6 @@ io.on('connection', (socket: Socket) => {
     // When client's score updates
     socket.on('playerdata', (score: number) => {
         room.players[playerIndex].score += score;
-        console.log(`score update received from ${room.players[playerIndex].nickname}`);
     });
     
     // When a client alerts their death
