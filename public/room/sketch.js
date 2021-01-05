@@ -2,6 +2,9 @@
 let playerName = '';
 let playerColor = '';
 
+// Server game vars
+let canPlay = false;
+
 // Set up variables, vals should not be changed
 let board = [];
 
@@ -62,6 +65,13 @@ function draw() {
       }
     }
   }
+  
+  // Tell them if they are waiting for the game to be over
+  if (!canPlay) {
+    app.status = 'Please wait for the game to be over or the host to start the game.';
+  } else {
+    app.status = '';
+  }
     
   // Checks if the player has won/lost
   if (checkWin()) {
@@ -93,7 +103,7 @@ function alertText(msg) {
 // Custom p5 js event handler
 // Activates whenever mouse is pressed
 function mousePressed() {
-  if (!playerAlive)
+  if (!playerAlive || !canPlay)
     return;
   
   // First, check if mouse is within bounds of board

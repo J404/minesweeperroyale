@@ -8,15 +8,30 @@ playerName = nick;
 
 // When server sends new player info
 let localPlayers = [];
+let client = {};
 
 socket.on('playerdata', players => {
   localPlayers = players;
   app.players = localPlayers;
 
   for (let player of localPlayers) {
-    if (player.nickname === playerName)
+    if (player.nickname === playerName) {
+      client = player;
+      app.client = player;
       playerColor = player.color;
+    }
   }
+});
+
+// Sends a startgame event to the server
+function sendStart() {
+  socket.emit('gamestart');
+}
+
+// Receive a gamestart event from the server, allow the player to start clicking
+socket.on('gamestart', () => {
+  canPlay = true;
+  app.canPlay = true;
 });
 
 /**
@@ -80,6 +95,10 @@ function sendDeath() {
 // Receive gameover event from server
 socket.on('gameover', ({ rankings }) => {
   alert(`Gameover! Winner is ${rankings[0].nickname}`);
+  
+  canPlay = false;
+  app.canPlay = false;
+
   console.log(rankings);
 });
 

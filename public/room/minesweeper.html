@@ -19,7 +19,17 @@
 </head>
 <body>
     <div id="app">
-        <p>Players</p>
+        <span>Players</span>
+        <div v-if="client.isHost && !canPlay">
+            <button @click="startGame()">Start Game</button>
+            <span>
+                Click Start Game to begin the game.
+                No players will be able to join when the game is in progress.
+            </span>
+        </div>
+        <br><br>
+        <span>{{ status }}</span>
+        <br>
         <p v-for="player in players"
         :style="{ color: player.color }">{{ player.nickname }}</p>
     </div>

@@ -35,7 +35,7 @@ io.on('connection', (socket: Socket) => {
     // Create a new room if necessary
     if (!!!rooms[roomCode]) {
         const board = createBoard();
-        rooms[roomCode] = { roomCode, board, players: [] };
+        rooms[roomCode] = { roomCode, board, players: [], active: false };
     }
         
     const room = rooms[roomCode];
@@ -78,8 +78,14 @@ io.on('connection', (socket: Socket) => {
         playerName = nickname;
 
         // Send the new player a copy of the board
-        io.to(roomCode).emit('boarddata', room.board);
+        io.to(socket.id).emit('boarddata', room.board);
 
+    });
+    
+    // Receive gamestart from host, carry on the message to clients
+    socket.on('gamestart', () => {
+        io.to(roomCode).emit('gamestart');
+        room.active = true;
     });
 
     type Coord = { i: number, j: number };
@@ -114,6 +120,7 @@ io.on('connection', (socket: Socket) => {
     socket.on('gameover', () => {
         const rankings = determineRankings(room);
         io.to(roomCode).emit('gameover', { rankings });
+        room.active = false;
     });
 });
 

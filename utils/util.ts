@@ -4,6 +4,7 @@ export interface Room {
     roomCode: string;
     board: Board;
     players: Player[];
+    active: boolean;
 }
 
 export interface Player {
