@@ -102,6 +102,12 @@ io.on('connection', (socket: Socket) => {
             io.to(roomCode).emit('gameover', { rankings: determineRankings(room) });
         }
     });
+    
+    // When a client alerts that the game is complete
+    socket.on('gameover', () => {
+        const rankings = determineRankings(room);
+        io.to(roomCode).emit('gameover', { rankings });
+    });
 });
 
 server.listen(3000);

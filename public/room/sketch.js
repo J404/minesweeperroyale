@@ -64,10 +64,12 @@ function draw() {
   }
     
   // Checks if the player has won/lost
-  if (checkWin())
+  if (checkWin()) {
     alertText("You win!");
-  else if (!playerAlive)
+    sendGameOver();
+  } else if (!playerAlive) {
     alertText("You lose :(");
+  }
   
   // Displays number of remaining mines and the time
   textSize(50);
