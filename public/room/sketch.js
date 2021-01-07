@@ -40,11 +40,24 @@ setDimensionsFromNumSquares();
 
 
 // Creates a timer and increments it every second
-let time = 0;
-const timer = setInterval(() => {
+let time = 300;
+let timer;
+
+function startTimer() {
+  timer = setInterval(() => {
     if (playerAlive && !checkWin())
-      time++
+      time--;
   }, 1000);
+}
+
+function endTimer() {
+  clearInterval(timer);
+}
+
+function resetTimer() {
+  time = 300;
+  startTimer();
+}
 
 // setup is a custom p5 js function that runs once at the program's start and does not repeat
 // Sets up the board of mines
@@ -80,10 +93,16 @@ function draw() {
     sendGameOver();
     endMessageShown = true;
   } else if (!playerAlive && !endMessageShown) {
-    alert('You lose :(');
+    alert('You\'ve died. Stick around to see if you win!');
     endMessageShown = true;
   }
   
+  // Check if time is up
+  if (time <= 0 && !endMessageShown) {
+    sendGameOver();
+    endTimer();
+  }
+
   // Displays number of remaining mines and the time
   textSize(50);
   textAlign(LEFT, BASELINE);
@@ -133,8 +152,6 @@ function keyPressed() {
       fullscreen(false);
     else
       fullscreen(true);
-  } else if (key == "r") {
-    restart();
   }
 }
 

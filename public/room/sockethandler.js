@@ -33,6 +33,7 @@ socket.on('gamestart', () => {
   canPlay = true;
   playerAlive = true;
   app.canPlay = true;
+  resetTimer();
 });
 
 /**
@@ -97,8 +98,10 @@ function sendDeath() {
 socket.on('gameover', ({ rankings }) => {
   alert(`Gameover! Winner is ${rankings[0].nickname}`);
   
+  endMessageShown = true;
   canPlay = false;
   app.canPlay = false;
+  endTimer();
 
   console.log(rankings);
 });

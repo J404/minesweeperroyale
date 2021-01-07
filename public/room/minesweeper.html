@@ -21,9 +21,10 @@
     <div id="app">
         <span>Players</span>
         <div v-if="client.isHost && !canPlay">
-            <button @click="startGame()">Start Game</button>
+            <button v-if="players.length > 1" @click="startGame()">Start Game</button>
             <span>
                 Click Start Game to begin the game.
+                A minimum of two players is required to begin a game.
                 No players will be able to join when the game is in progress.
             </span>
         </div>
