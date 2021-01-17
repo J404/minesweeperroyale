@@ -11,6 +11,8 @@
     <script src="/socket.io/socket.io.js"></script>
 
     <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Noto+Sans+TC">
 
     <script src="client.js" defer></script>
     <script src="sketch.js" defer></script>
@@ -19,20 +21,27 @@
 </head>
 <body>
     <div id="app">
-        <span>Players</span>
-        <div v-if="client.isHost && !canPlay">
-            <button v-if="players.length > 1" @click="startGame()">Start Game</button>
-            <span>
-                Click Start Game to begin the game.
-                A minimum of two players is required to begin a game.
-                No players will be able to join when the game is in progress.
-            </span>
+        <div id="left-column">
+            <div id="game-canvas">
+            </div>
         </div>
-        <br><br>
-        <span>{{ status }}</span>
-        <br>
-        <p v-for="player in players"
-        :style="{ color: player.color }">{{ player.nickname }}</p>
+
+        <div id="right-column">
+            <div id="instructions">
+                <p>Players</p>
+                <div v-if="client.isHost && !canPlay">
+                    <button v-if="players.length > 1" @click="startGame()">Start Game</button>
+                    <p>
+                        Click Start Game to begin the game.
+                        A minimum of two players is required to begin a game.
+                        No players will be able to join when the game is in progress.
+                    </p>
+                </div>
+            </div>
+            <span>{{ status }}</span>
+            <p v-for="player in players"
+            :style="{ color: player.color }">{{ player.nickname }}</p>
+        </div>
     </div>
 </body>
 </html>

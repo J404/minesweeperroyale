@@ -1,3 +1,6 @@
+let canvas;
+const CANVASNAME = 'defaultCanvas0';
+
 // Player vars
 let playerName = '';
 let playerColor = '';
@@ -62,7 +65,8 @@ function resetTimer() {
 // setup is a custom p5 js function that runs once at the program's start and does not repeat
 // Sets up the board of mines
 function setup() {
-  createCanvas((boardWidth > headerWidth) ? boardWidth : headerWidth, boardHeight + headerHeight);
+  canvas = createCanvas((boardWidth > headerWidth) ? boardWidth : headerWidth, boardHeight + headerHeight);
+  canvas.parent('game-canvas');
   // createBoard();
 }
 
@@ -116,9 +120,8 @@ function draw() {
 function mousePressed() {
   if (!playerAlive || !canPlay)
     return;
-  
+
   // First, check if mouse is within bounds of board
-  // (mouseX and mouseY are values given by p5.js)
   if (mouseX <= width && mouseY <= height && mouseY > headerHeight) {
     // Use x and y of mouse to determine which square the mouse is over
     const i = floor((mouseY - headerHeight) / yIncrement);
