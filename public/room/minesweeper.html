@@ -28,7 +28,6 @@
 
         <div id="right-column">
             <div id="instructions">
-                <p>Players</p>
                 <div v-if="client.isHost && !canPlay">
                     <button v-if="players.length > 1" @click="startGame()">Start Game</button>
                     <p>
@@ -38,9 +37,25 @@
                     </p>
                 </div>
             </div>
-            <span>{{ status }}</span>
+            
+            <p>Game status: {{ status }}</p>
+
+            <p>Players</p>
             <p v-for="player in players"
             :style="{ color: player.color }">{{ player.nickname }}</p>
+        </div>
+        
+        <div v-if="modalData.showModal">
+            <div id="backdrop"></div>
+            <modal
+            :headertext="modalData.headerText"
+            :bodytext="modalData.bodyText"
+            :inputbox="modalData.inputBox"
+            :placeholdtext="modalData.placeholdText"
+            :buttontext="modalData.buttonText"
+            :showmodal="modalData.showModal"
+            @close-modal="closeModal">
+            </modal>
         </div>
     </div>
 </body>

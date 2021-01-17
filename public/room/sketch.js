@@ -87,8 +87,6 @@ function draw() {
   // Tell them if they are waiting for the game to be over
   if (!canPlay) {
     app.status = 'Please wait for the game to be over or the host to start the game.';
-  } else {
-    app.status = '';
   }
     
   // Checks if the player has won/lost
@@ -148,14 +146,6 @@ function mousePressed() {
 
 // Custom p5 js event handler that activates every key press
 function keyPressed() {
-  // If "f" is pressed, toggle between fullscreen and minimized modes
-  if (key == "f") {
-    let isFullscreen = fullscreen();
-    if (isFullscreen)
-      fullscreen(false);
-    else
-      fullscreen(true);
-  }
 }
 
 // Checks if the player has won

@@ -2,9 +2,12 @@
 const socket = io();
 
 // Emit name to server upon joining game
-let nick = prompt('Howdy sailor! Let us know what you want to be called');
-socket.emit('name', nick);
-playerName = nick;
+let gottenNick = false;
+
+function sendNick(nickname) {
+  playerName = nickname;
+  socket.emit('name', nickname);
+}
 
 // When server sends new player info
 let localPlayers = [];
@@ -33,6 +36,8 @@ socket.on('gamestart', () => {
   canPlay = true;
   playerAlive = true;
   app.canPlay = true;
+  app.status = 'Game in progress';
+
   resetTimer();
 });
 
@@ -101,6 +106,7 @@ socket.on('gameover', ({ rankings }) => {
   endMessageShown = true;
   canPlay = false;
   app.canPlay = false;
+  app.status = 'Gameover. Wait for host to restart game.';
   endTimer();
 
   console.log(rankings);
