@@ -91,11 +91,14 @@ function draw() {
     
   // Checks if the player has won/lost
   if (checkWin() && !endMessageShown) {
-    alert('You win!');
     sendGameOver();
     endMessageShown = true;
   } else if (!playerAlive && !endMessageShown) {
-    alert('You\'ve died. Stick around to see if you win!');
+    app.showModal('You\'ve died!',
+    'You can still win, so stick around to the end!',
+    false, '',
+    'Exit');
+    
     endMessageShown = true;
   }
   
