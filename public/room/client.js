@@ -43,16 +43,23 @@ const app = new Vue({
     },
     created: function() {
         // Name prompt modal
-        this.modalData.headerText = 'Howdy, sailor!';
-        this.modalData.bodyText = 'Let us know what you want to be called.';
-        this.modalData.inputBox = true;
-        this.modalData.placeholdText = 'Nickname';
-        this.modalData.buttonText = 'Join Room';
-        this.modalData.showModal = true;
+        this.showModal('Howdy Sailor!',
+        'Let us know what you want to be called.',
+        true, 'Nickname',
+        'Enter Room');
     },
     methods: {
         startGame: function() {
             sendStart();
+        },
+        showModal: function(headerText, bodyText, inputBox,
+                            placeholdText, buttonText) {
+            this.modalData.headerText = headerText;
+            this.modalData.bodyText = bodyText;
+            this.modalData.inputBox = inputBox;
+            this.modalData.placeholdText = placeholdText;
+            this.modalData.buttonText = buttonText;
+            this.modalData.showModal = true;
         },
         closeModal: function(fieldValue) {
             this.modalData.showModal = false;
