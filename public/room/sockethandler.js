@@ -2,9 +2,10 @@
 const socket = io();
 
 // Emit name to server upon joining game
-let gottenNick = false;
+let sentNick = false;
 
 function sendNick(nickname) {
+  sentNick = true;
   playerName = nickname;
   socket.emit('name', nickname);
 }
@@ -101,7 +102,9 @@ function sendDeath() {
 
 // Receive gameover event from server
 socket.on('gameover', ({ rankings }) => {
-  alert(`Gameover! Winner is ${rankings[0].nickname}`);
+  app.showModal('Gameover!',
+  `The game is over! The winner is ${rankings[0].nickname}`,
+  false, '', 'Exit');
   
   endMessageShown = true;
   canPlay = false;

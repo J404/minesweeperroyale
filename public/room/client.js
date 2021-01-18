@@ -64,8 +64,8 @@ const app = new Vue({
         closeModal: function(fieldValue) {
             this.modalData.showModal = false;
             
-            // If gottenNick is false, then this modal must be for nickname
-            if (!gottenNick) {
+            // If sentNick is false, then this modal must be for nickname
+            if (!sentNick) {
                 sendNick(fieldValue);
             }
         }
