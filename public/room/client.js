@@ -4,7 +4,7 @@ Vue.component('modal', {
             <h4>{{ headertext }}</h4>
             <p>{{ bodytext }}</p>
             <input v-if="inputbox" type="text" :placeholder="placeholdtext"
-            v-model="value">
+            @keyup.enter="exit()" v-model="value">
             <button @click="exit()">{{ buttontext }}</button>
         </div>
     `,
