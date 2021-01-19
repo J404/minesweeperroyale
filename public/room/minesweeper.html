@@ -38,9 +38,13 @@
                 </div>
             </div>
             
+            <div class="separator"></div>
+            
             <p>Game status: {{ status }}</p>
+            
+            <div class="separator"></div>
 
-            <p>Players</p>
+            <p>Players:</p>
             <p v-for="player in players"
             :style="{ color: player.color }">{{ player.nickname }}</p>
         </div>

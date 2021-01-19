@@ -20,6 +20,12 @@ div#right-column {
     margin-right: 0;
 }
 
+div.separator {
+    height: 1px;
+    width: 90%;
+    border-bottom: 2px solid silver;
+}
+
 div#backdrop {
     z-index: 3;
     background-color: black;
