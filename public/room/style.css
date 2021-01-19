@@ -40,4 +40,17 @@ div#modal {
     left: 30%;
     top: 30%;
     background-color: white;
+    border-radius: 0.5rem;
+}
+
+div#modal>h2 {
+    border-bottom: 1px solid silver;
+}
+
+div#modal>p, div#modal>h2, div#modal>input, div#modal>button {
+    padding: 0.4rem;
+}
+
+div#modal>input, div#modal>input {
+    margin: 0.4rem;
 }

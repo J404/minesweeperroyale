@@ -1,7 +1,7 @@
 Vue.component('modal', {
     template: `
         <div id='modal' v-if="showmodal">
-            <h4>{{ headertext }}</h4>
+            <h2>{{ headertext }}</h2>
             <p>{{ bodytext }}</p>
             <input v-if="inputbox" type="text" :placeholder="placeholdtext"
             @keyup.enter="exit()" v-model="value">
